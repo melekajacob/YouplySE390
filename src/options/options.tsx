@@ -7,9 +7,11 @@ import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import DateRangePicker from '@mui/lab/DateRangePicker';
-
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import InputLabel from '@mui/material/InputLabel';
 
 import './options.css';
 
@@ -36,9 +38,10 @@ const App: React.FC<{}> = () => {
       dateRange: [],
     },
     experience: [{ dateRange: [null, null] }],
-    projects: [],
-    skills: [],
+    skills: ['C++'],
   });
+
+  const skillList = ['C++', 'C', 'Python'];
 
   return (
     <div className='container'>
@@ -102,53 +105,56 @@ const App: React.FC<{}> = () => {
             />
           </div>
         </div>
+      </div>
 
-        <div className='section'>
+      <div className='section'>
+        <div>
+          <div>Links</div>
           <div>
-            <div>Links</div>
-            <div>
-              <TextField
-                id='outlined-basic'
-                label='LinkedIn URL'
-                variant='outlined'
-              />
-              <TextField
-                id='outlined-basic'
-                label='GitHub URL'
-                variant='outlined'
-              />
-            </div>
-
-            <div>
-              <TextField
-                id='outlined-basic'
-                label='Porfolio URL'
-                variant='outlined'
-              />
-              <TextField
-                id='outlined-basic'
-                label='Other URL'
-                variant='outlined'
-              />
-            </div>
-
-            <button>Add link</button>
+            <TextField
+              id='outlined-basic'
+              label='LinkedIn URL'
+              variant='outlined'
+            />
+            <TextField
+              id='outlined-basic'
+              label='GitHub URL'
+              variant='outlined'
+            />
           </div>
-        </div>
 
-        <div className='section'>
           <div>
-            <div>Education</div>
-            <div>
-              <TextField
-                id='outlined-basic'
-                label='University Name'
-                variant='outlined'
-              />
-            </div>
+            <TextField
+              id='outlined-basic'
+              label='Porfolio URL'
+              variant='outlined'
+            />
+            <TextField
+              id='outlined-basic'
+              label='Other URL'
+              variant='outlined'
+            />
+          </div>
 
-            <div>
-              <Select label='Degree'>
+          <Button variant='contained'>Add Link</Button>
+        </div>
+      </div>
+
+      <div className='section'>
+        <div>
+          <div>Education</div>
+          <div>
+            <TextField
+              id='outlined-basic'
+              label='University Name'
+              variant='outlined'
+            />
+          </div>
+
+          <div>
+            <FormControl>
+              <InputLabel id='degree'>Age</InputLabel>
+              <Select id='degree' label='Degree'>
                 <MenuItem>Vocational</MenuItem>
                 <MenuItem>Associates</MenuItem>
                 <MenuItem>Bachelors</MenuItem>
@@ -156,71 +162,103 @@ const App: React.FC<{}> = () => {
                 <MenuItem>PhD</MenuItem>
                 <MenuItem>Other</MenuItem>
               </Select>
-              <TextField
-                id='outlined-basic'
-                label='Field of Study'
-                variant='outlined'
-              />
-            </div>
+            </FormControl>
+            <TextField
+              id='outlined-basic'
+              label='Field of Study'
+              variant='outlined'
+            />
           </div>
         </div>
+      </div>
 
-        <div className='section'>
-          <div>
-            <div>Experience</div>
-            {formData.experience.map((exp) => {
-              return (
-                <Fragment>
-                  <div>
-                    <TextField
-                      id='outlined-basic'
-                      label='Job Title'
-                      variant='outlined'
-                    />
-
-                    <TextField
-                      id='outlined-basic'
-                      label='Company'
-                      variant='outlined'
-                    />
-                  </div>
-                  <div>
-                    <TextField
-                      id='outlined-basic'
-                      label='Location'
-                      variant='outlined'
-                    />
-                  </div>
-                  <div>
-                    <FormControlLabel
-                      control={<Checkbox />}
-                      label='Currently work here'
-                    />
-                  </div>
-
-                  <DateRangePicker
-                    startText='Start Date'
-                    endText='End Date'
-                    value={exp.dateRange}
-                    onChange={(newValue) => {}}
-                    renderInput={(startProps, endProps) => (
-                      <React.Fragment>
-                        <TextField {...startProps} />
-                        <Box sx={{ mx: 2 }}> to </Box>
-                        <TextField {...endProps} />
-                      </React.Fragment>
-                    )}
+      <div className='section'>
+        <div>
+          <div>Experience</div>
+          {formData.experience.map((exp) => {
+            return (
+              <Fragment>
+                <div>
+                  <TextField
+                    id='outlined-basic'
+                    label='Job Title'
+                    variant='outlined'
                   />
 
-                  <div>
-                    <TextField
-                      placeholder='Description'
-                      multiline
-                      rows={4}
-                      maxRows={6}
-                    />
-                  </div>
-                </Fragment>
+                  <TextField
+                    id='outlined-basic'
+                    label='Company'
+                    variant='outlined'
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id='outlined-basic'
+                    label='Location'
+                    variant='outlined'
+                  />
+                </div>
+                <div>
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label='Currently work here'
+                  />
+                </div>
+
+                <DateRangePicker
+                  startText='Start Date'
+                  endText='End Date'
+                  value={exp.dateRange}
+                  onChange={(newValue) => {}}
+                  renderInput={(startProps, endProps) => (
+                    <React.Fragment>
+                      <TextField {...startProps} />
+                      <Box sx={{ mx: 2 }}> to </Box>
+                      <TextField {...endProps} />
+                    </React.Fragment>
+                  )}
+                />
+
+                <div>
+                  <TextField
+                    placeholder='Description'
+                    multiline
+                    rows={4}
+                    maxRows={6}
+                  />
+                </div>
+              </Fragment>
+            );
+          })}
+
+          <Button variant='contained'>Add Experience</Button>
+        </div>
+      </div>
+
+      <div className='section'>
+        <div>
+          <div>Skills</div>
+
+          <TextField
+            fullWidth
+            select
+            margin='normal'
+            label='Category'
+            size='medium'
+          >
+            {skillList.map((skill) => (
+              <MenuItem key={skill} value={skill}>
+                {skill}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <div>
+            {formData.skills.map((skill) => {
+              return (
+                <div>
+                  {skill} <span>X</span>
+                </div>
               );
             })}
           </div>
