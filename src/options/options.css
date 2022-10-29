@@ -78,13 +78,50 @@ body {
   align-items: center;
 }
 
-.btn__remove {
+.btn--action {
   width: 50px;
   height: 50px;
   border: 1px solid #cdcdcd;
-  background: white;
-  border-radius: 25px;
-  overflow: hidden;
-  position: relative;
-  transition: width 0.2s ease-in-out;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.remove {
+  background-color: rgb(238, 34, 34);
+}
+
+.add {
+  background-color: #68ab96;
+}
+
+.skillsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 20px;
+}
+
+.skill {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: #ecfbf6;
+  border: 1px solid #9cdcce;
+  padding: 10px;
+  margin: 5px;
+}
+
+.removeSkill {
+  margin-top: 2px;
+  margin-left: 10px;
+  font-size: 12px;
+  cursor: pointer;
 }

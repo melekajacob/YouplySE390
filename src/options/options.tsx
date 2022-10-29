@@ -12,6 +12,7 @@ import FormControl from '@mui/material/FormControl';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import InputLabel from '@mui/material/InputLabel';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import './options.css';
 
@@ -38,7 +39,7 @@ const App: React.FC<{}> = () => {
       dateRange: [],
     },
     experience: [{ dateRange: [null, null] }],
-    skills: ['C++'],
+    skills: ['C++', 'C++', 'C', 'Python', 'C++', 'C', 'Python'],
   });
 
   const skillList = ['C++', 'C', 'Python'];
@@ -313,34 +314,39 @@ const App: React.FC<{}> = () => {
           })}
 
           <div className='btn__group'>
-            <div className='btn__remove'>-</div>
-            <div className='btn__add'>+</div>
+            <div className='btn--action remove'>-</div>
+            <div className='btn--action add'>+</div>
           </div>
         </div>
       </div>
       <div className='section'>
-        <div>
-          <div>Skills</div>
-
-          <TextField
-            fullWidth
-            select
-            margin='normal'
-            label='Category'
-            size='medium'
+        <div className='section__sep'>
+          <div className='section__title--mb'>Skills</div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '93%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
           >
-            {skillList.map((skill) => (
-              <MenuItem key={skill} value={skill}>
-                {skill}
-              </MenuItem>
-            ))}
-          </TextField>
+            <TextField select margin='normal' label='Skill' size='medium'>
+              {skillList.map((skill) => (
+                <MenuItem key={skill} value={skill}>
+                  {skill}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
 
-          <div>
+          <div className='skillsGroup'>
             {formData.skills.map((skill) => {
               return (
-                <div>
-                  {skill} <span>X</span>
+                <div className='skill'>
+                  {skill}
+
+                  <div className='removeSkill'>
+                    <DeleteIcon />
+                  </div>
                 </div>
               );
             })}
