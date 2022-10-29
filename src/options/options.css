@@ -1,10 +1,11 @@
 body {
   background-color: #f1f5f8;
+  font-family: sans-serif;
 }
 
 .container {
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 30%;
+  margin-right: 30%;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -12,4 +13,78 @@ body {
 
 .section {
   width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.section__sep {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.section__title {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.section__title--mb {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.section__formGroup {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.section__checkbox {
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn--outline {
+  border: 2px solid #68ab96;
+  background-color: white;
+  color: #68ab96;
+  padding: 10px 50px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.btn--outline:hover {
+  background-color: #68ab96;
+  color: white;
+}
+
+.btn__group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn__remove {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #cdcdcd;
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+  transition: width 0.2s ease-in-out;
 }

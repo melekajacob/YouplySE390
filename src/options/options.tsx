@@ -46,16 +46,24 @@ const App: React.FC<{}> = () => {
   return (
     <div className='container'>
       <div className='section'>
-        <div>Upload Resume</div>
+        <div className='section__title'>Upload Resume</div>
         <div>
-          <input type='file' />
+          <input type='file' id='resumeUpload' className='hidden' />
+          <label className='btn--outline' htmlFor='resumeUpload'>
+            Upload
+          </label>
         </div>
       </div>
-
       <div className='section'>
-        <div>
-          <div>Personal Information</div>
-          <div>
+        <div className='section__sep'>
+          <div className='section__title--mb'>Personal Information</div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='First Name'
@@ -66,9 +74,15 @@ const App: React.FC<{}> = () => {
               label='Last Name'
               variant='outlined'
             />
-          </div>
+          </Box>
 
-          <div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='Email Address'
@@ -79,20 +93,32 @@ const App: React.FC<{}> = () => {
               label='Phone Number'
               variant='outlined'
             />
-          </div>
+          </Box>
         </div>
 
-        <div>
-          <div>Address</div>
-          <div>
+        <div className='section__sep'>
+          <div className='section__title--mb'>Address</div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '93%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='Street Address'
               variant='outlined'
             />
-          </div>
+          </Box>
 
-          <div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='Postal Code'
@@ -103,14 +129,20 @@ const App: React.FC<{}> = () => {
               label='Province'
               variant='outlined'
             />
-          </div>
+          </Box>
         </div>
       </div>
-
+      {/* TODO: Fix links to allow for other links  */}
       <div className='section'>
-        <div>
-          <div>Links</div>
-          <div>
+        <div className='section__sep'>
+          <div className='section__title--mb'>Links</div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='LinkedIn URL'
@@ -121,9 +153,15 @@ const App: React.FC<{}> = () => {
               label='GitHub URL'
               variant='outlined'
             />
-          </div>
+          </Box>
 
-          <div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='Porfolio URL'
@@ -134,24 +172,37 @@ const App: React.FC<{}> = () => {
               label='Other URL'
               variant='outlined'
             />
-          </div>
-
-          <Button variant='contained'>Add Link</Button>
+          </Box>
         </div>
       </div>
 
+      {/* TODO: Expand education section to allow for more degree types */}
       <div className='section'>
-        <div>
-          <div>Education</div>
-          <div>
+        <div className='section__sep'>
+          <div className='section__title--mb'>Education</div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '93%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
-              label='University Name'
+              label='Institution Name'
               variant='outlined'
             />
-          </div>
+          </Box>
 
-          <div>
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              '& .MuiFormControl-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <FormControl>
               <InputLabel id='degree'>Age</InputLabel>
               <Select id='degree' label='Degree'>
@@ -168,17 +219,22 @@ const App: React.FC<{}> = () => {
               label='Field of Study'
               variant='outlined'
             />
-          </div>
+          </Box>
         </div>
       </div>
-
       <div className='section'>
-        <div>
-          <div>Experience</div>
+        <div className='section__sep'>
+          <div className='section__title--mb'>Experience</div>
           {formData.experience.map((exp) => {
             return (
               <Fragment>
-                <div>
+                <Box
+                  sx={{
+                    '& .MuiTextField-root': { m: 1, width: '45%' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   <TextField
                     id='outlined-basic'
                     label='Job Title'
@@ -190,51 +246,78 @@ const App: React.FC<{}> = () => {
                     label='Company'
                     variant='outlined'
                   />
-                </div>
-                <div>
+                </Box>
+                <Box
+                  sx={{
+                    '& .MuiTextField-root': { m: 1, width: '93%' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   <TextField
                     id='outlined-basic'
                     label='Location'
                     variant='outlined'
                   />
-                </div>
-                <div>
+                </Box>
+
+                <div className='section__checkbox'>
                   <FormControlLabel
                     control={<Checkbox />}
                     label='Currently work here'
                   />
                 </div>
+                <Box
+                  sx={{
+                    '& .MuiTextField-root': { m: 1, width: '42%' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <DateRangePicker
+                    startText='Start Date'
+                    endText='End Date'
+                    value={exp.dateRange}
+                    onChange={(newValue) => {}}
+                    renderInput={(startProps, endProps) => (
+                      <React.Fragment>
+                        <TextField {...startProps} />
+                        <Box
+                          sx={{ mx: 2, fontSize: '16px', fontWeight: 'bold' }}
+                        >
+                          {' '}
+                          to{' '}
+                        </Box>
+                        <TextField {...endProps} />
+                      </React.Fragment>
+                    )}
+                  />
+                </Box>
 
-                <DateRangePicker
-                  startText='Start Date'
-                  endText='End Date'
-                  value={exp.dateRange}
-                  onChange={(newValue) => {}}
-                  renderInput={(startProps, endProps) => (
-                    <React.Fragment>
-                      <TextField {...startProps} />
-                      <Box sx={{ mx: 2 }}> to </Box>
-                      <TextField {...endProps} />
-                    </React.Fragment>
-                  )}
-                />
-
-                <div>
+                <Box
+                  sx={{
+                    '& .MuiTextField-root': { m: 1, width: '93%' },
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
                   <TextField
                     placeholder='Description'
                     multiline
                     rows={4}
                     maxRows={6}
                   />
-                </div>
+                </Box>
               </Fragment>
             );
           })}
 
-          <Button variant='contained'>Add Experience</Button>
+          <div className='btn__group'>
+            <div className='btn__remove'>-</div>
+            <div className='btn__add'>+</div>
+          </div>
         </div>
       </div>
-
       <div className='section'>
         <div>
           <div>Skills</div>
