@@ -1,4 +1,4 @@
-import React, { useState, Fragment, ChangeEvent } from 'react';
+import React, { useState, useEffect, Fragment, ChangeEvent } from 'react';
 import ReactDOM from 'react-dom';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,33 +19,83 @@ import { useStateObject } from './hooks/useStateObject';
 import { v4 as uuidv4 } from 'uuid';
 import 'react-notifications-component/dist/theme.css';
 import './options.css';
-import { PersonalInfo, Address, Link, Education, Experience } from './types';
+import {
+  PersonalInfo,
+  Address,
+  Link,
+  Education,
+  Experience,
+  FormData,
+} from '../types';
 import { VALUE_TYPE } from './constants';
+import { getFormData, setFormData } from '../utils/storage';
 
 const App: React.FC<{}> = () => {
   const [resume, setResume] = useState<File | null>(null);
-  const [personalInfo, setPersonalInfoField] = useStateObject<PersonalInfo>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-  });
-  const [address, setAddressField] = useStateObject<Address>({
+  const [personalInfo, setPersonalInfo, setPersonalInfoField] =
+    useStateObject<PersonalInfo>({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+    });
+  const [address, setAddress, setAddressField] = useStateObject<Address>({
     street: '',
     postalCode: '',
     province: '',
   });
   const [links, setLinks] = useState<Link[]>([]);
-  const [education, setEducationField] = useStateObject<Education>({
-    name: '',
-    degree: '',
-    field: '',
-    gpa: '',
-    dateRange: [],
-  });
+  const [education, setEducation, setEducationField] =
+    useStateObject<Education>({
+      name: '',
+      degree: '',
+      field: '',
+      gpa: '',
+      dateRange: [],
+    });
 
   const [experience, setExperience] = useState<Experience[]>([]);
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getFormData().then((data: FormData) => {
+      setResume(data.resume);
+      setPersonalInfo(data.personalInfo);
+      setAddress(data.address);
+      setLinks(data.links);
+      setEducation(data.education);
+      setExperience(data.experience);
+      setSkills(data.skills);
+
+      setIsLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) return;
+    const formData: FormData = {
+      resume,
+      personalInfo,
+      address,
+      links,
+      education,
+      experience,
+      skills,
+    };
+
+    console.log('HELLO THERE');
+    setFormData(formData);
+  }, [
+    resume,
+    JSON.stringify(personalInfo),
+    JSON.stringify(address),
+    JSON.stringify(links),
+    JSON.stringify(education),
+    JSON.stringify(experience),
+    JSON.stringify(skills),
+  ]);
 
   const skillList = ['C++', 'C', 'Python'];
 
@@ -102,7 +152,6 @@ const App: React.FC<{}> = () => {
     setExperience((oldExperience) => {
       const newExperience = [...oldExperience];
       newExperience.splice(idx, 1);
-      console.log('NEW EXPERIENCE', newExperience);
       return newExperience;
     });
   };
@@ -165,6 +214,9 @@ const App: React.FC<{}> = () => {
   console.log(experience);
   console.log(skills);
 
+  // TODO: Have loading screen
+  if (isLoading) return null;
+
   return (
     <div className='container'>
       <div className='section'>
@@ -200,6 +252,7 @@ const App: React.FC<{}> = () => {
                 'firstName',
                 setPersonalInfoField
               )}
+              value={personalInfo.firstName}
             />
             <TextField
               id='outlined-basic'
@@ -209,6 +262,7 @@ const App: React.FC<{}> = () => {
                 'lastName',
                 setPersonalInfoField
               )}
+              value={personalInfo.lastName}
             />
           </Box>
 
@@ -227,6 +281,7 @@ const App: React.FC<{}> = () => {
                 'email',
                 setPersonalInfoField
               )}
+              value={personalInfo.email}
             />
             <TextField
               id='outlined-basic'
@@ -236,6 +291,7 @@ const App: React.FC<{}> = () => {
                 'phone',
                 setPersonalInfoField
               )}
+              value={personalInfo.phone}
             />
           </Box>
         </div>
@@ -254,6 +310,7 @@ const App: React.FC<{}> = () => {
               label='Street Address'
               variant='outlined'
               onChange={onChangeHandler<Address>('street', setAddressField)}
+              value={address.street}
             />
           </Box>
 
@@ -269,12 +326,14 @@ const App: React.FC<{}> = () => {
               label='Postal Code'
               variant='outlined'
               onChange={onChangeHandler<Address>('postalCode', setAddressField)}
+              value={address.postalCode}
             />
             <TextField
               id='outlined-basic'
               label='Province'
               variant='outlined'
               onChange={onChangeHandler<Address>('province', setAddressField)}
+              value={address.province}
             />
           </Box>
         </div>
@@ -296,6 +355,7 @@ const App: React.FC<{}> = () => {
               label='LinkedIn URL'
               variant='outlined'
               onChange={handleAddLink('linkedIn')}
+              value={links.find((link) => link.type === 'linkedIn')}
             />
             <TextField
               id='outlined-basic'

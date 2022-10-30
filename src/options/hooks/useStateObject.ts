@@ -6,7 +6,7 @@ export interface GenericObject {
 
 export const useStateObject = <T>(
   initialState: T
-): [T, (a: keyof T, b: any) => void] => {
+): [T, (a: T) => void, (a: keyof T, b: any) => void] => {
   const [state, setState] = useState(initialState);
 
   const setField = (fieldName: keyof T, value: any) => {
@@ -18,5 +18,5 @@ export const useStateObject = <T>(
     });
   };
 
-  return [state, setField];
+  return [state, setState, setField];
 };

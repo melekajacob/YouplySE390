@@ -37,3 +37,13 @@ export interface Experience {
   startDate?: string;
   id: string;
 }
+
+export interface FormData {
+  resume: File | null;
+  personalInfo: PersonalInfo;
+  address: Address;
+  links: Link[];
+  education: Education;
+  experience: Experience[];
+  skills: string[];
+}
