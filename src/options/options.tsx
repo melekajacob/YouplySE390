@@ -137,6 +137,27 @@ const App: React.FC<{}> = () => {
       });
     };
 
+  const handleAddSkill = (e) => {
+    const value = e.target.value;
+
+    setSkills((oldSkills) => {
+      const idx = oldSkills.findIndex((skill) => skill === value);
+
+      if (idx !== -1) return oldSkills;
+
+      return [...oldSkills, value];
+    });
+  };
+
+  const handleRemoveSkill = (skill: string) => () => {
+    setSkills((oldSkills) => {
+      const newSkills = [...oldSkills];
+      const idx = newSkills.findIndex((candSkill) => candSkill === skill);
+      newSkills.splice(idx, 1);
+      return newSkills;
+    });
+  };
+
   console.log(personalInfo);
   console.log(address);
   console.log(links);
@@ -508,18 +529,21 @@ const App: React.FC<{}> = () => {
           <div className='section__title--mb'>Skills</div>
           <Box
             sx={{
-              '& .MuiTextField-root': { m: 1, width: '93%' },
+              '& .MuiFormControl-root': { m: 1, width: '93%' },
               display: 'flex',
               justifyContent: 'center',
             }}
           >
-            <TextField select margin='normal' label='Skill' size='medium'>
-              {skillList.map((skill) => (
-                <MenuItem key={skill} value={skill}>
-                  {skill}
-                </MenuItem>
-              ))}
-            </TextField>
+            <FormControl>
+              <InputLabel id='skill'>Select Skill</InputLabel>
+              <Select id='skill' label='Select Skill' onChange={handleAddSkill}>
+                {skillList.map((skill) => (
+                  <MenuItem key={skill} value={skill}>
+                    {skill}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
 
           <div className='skillsGroup'>
@@ -528,7 +552,10 @@ const App: React.FC<{}> = () => {
                 <div className='skill'>
                   {skill}
 
-                  <div className='removeSkill'>
+                  <div
+                    onClick={handleRemoveSkill(skill)}
+                    className='removeSkill'
+                  >
                     <DeleteIcon />
                   </div>
                 </div>
