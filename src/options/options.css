@@ -126,3 +126,8 @@ body {
   font-size: 12px;
   cursor: pointer;
 }
+
+.divider {
+  width: 75%;
+  margin-bottom: 10px;
+}

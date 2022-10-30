@@ -16,10 +16,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ReactNotification from 'react-notifications-component';
 import { notify } from './utils/Toast';
 import { useStateObject } from './hooks/useStateObject';
-
+import { v4 as uuidv4 } from 'uuid';
 import 'react-notifications-component/dist/theme.css';
 import './options.css';
-import { PersonalInfo, Address, Link, Education } from './types';
+import { PersonalInfo, Address, Link, Education, Experience } from './types';
+import { VALUE_TYPE } from './constants';
 
 const App: React.FC<{}> = () => {
   const [resume, setResume] = useState<File | null>(null);
@@ -43,7 +44,7 @@ const App: React.FC<{}> = () => {
     dateRange: [],
   });
 
-  const [experience, setExperience] = useState([]);
+  const [experience, setExperience] = useState<Experience[]>([]);
   const [skills, setSkills] = useState([]);
 
   const skillList = ['C++', 'C', 'Python'];
@@ -81,12 +82,67 @@ const App: React.FC<{}> = () => {
       });
     };
 
-  const handleAddExperience = (idx) => () => {
-    const newExperience = [...experience];
-    newExperience.splice(idx, 0);
+  const handleAddExperience = (idx: number) => () => {
+    setExperience((oldExperience) => {
+      const newExperience = [...oldExperience];
+      newExperience.splice(idx, 0, {
+        title: '',
+        company: '',
+        location: '',
+        isCurrentlyWorking: false,
+        dateRange: [null, null],
+        description: '',
+        id: uuidv4(),
+      });
+      return newExperience;
+    });
   };
 
+  const handleRemoveExperience = (idx: number) => () => {
+    setExperience((oldExperience) => {
+      const newExperience = [...oldExperience];
+      newExperience.splice(idx, 1);
+      console.log('NEW EXPERIENCE', newExperience);
+      return newExperience;
+    });
+  };
+
+  const getValueFromEvent = (e, valueType) => {
+    if (valueType === VALUE_TYPE.domEvent) {
+      return e.target.value;
+    } else if (valueType === VALUE_TYPE.value) {
+      return e;
+    }
+  };
+
+  const updateExperienceField =
+    (
+      idx: number,
+      fieldName: keyof Experience,
+      valueType: VALUE_TYPE = VALUE_TYPE.domEvent
+    ) =>
+    (e) => {
+      const value = getValueFromEvent(e, valueType);
+
+      setExperience((experience) => {
+        const newExperience = [...experience];
+        newExperience[idx] = {
+          ...experience[idx],
+          [fieldName]:
+            valueType !== VALUE_TYPE.checkbox
+              ? value
+              : !experience[idx].isCurrentlyWorking,
+        };
+        return newExperience;
+      });
+    };
+
   console.log(personalInfo);
+  console.log(address);
+  console.log(links);
+  console.log(education);
+  console.log(experience);
+  console.log(skills);
 
   return (
     <div className='container'>
@@ -311,9 +367,9 @@ const App: React.FC<{}> = () => {
       <div className='section'>
         <div className='section__sep'>
           <div className='section__title--mb'>Experience</div>
-          {experience.map((exp) => {
+          {experience.map((exp, idx) => {
             return (
-              <Fragment>
+              <Fragment key={exp.id}>
                 <Box
                   sx={{
                     '& .MuiTextField-root': { m: 1, width: '45%' },
@@ -325,14 +381,19 @@ const App: React.FC<{}> = () => {
                     id='outlined-basic'
                     label='Job Title'
                     variant='outlined'
+                    value={exp.title}
+                    onChange={updateExperienceField(idx, 'title')}
                   />
 
                   <TextField
                     id='outlined-basic'
                     label='Company'
                     variant='outlined'
+                    value={exp.company}
+                    onChange={updateExperienceField(idx, 'company')}
                   />
                 </Box>
+
                 <Box
                   sx={{
                     '& .MuiTextField-root': { m: 1, width: '93%' },
@@ -344,12 +405,23 @@ const App: React.FC<{}> = () => {
                     id='outlined-basic'
                     label='Location'
                     variant='outlined'
+                    value={exp.location}
+                    onChange={updateExperienceField(idx, 'location')}
                   />
                 </Box>
 
                 <div className='section__checkbox'>
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={
+                      <Checkbox
+                        checked={exp.isCurrentlyWorking}
+                        onChange={updateExperienceField(
+                          idx,
+                          'isCurrentlyWorking',
+                          VALUE_TYPE.checkbox
+                        )}
+                      />
+                    }
                     label='Currently work here'
                   />
                 </div>
@@ -364,7 +436,11 @@ const App: React.FC<{}> = () => {
                     startText='Start Date'
                     endText='End Date'
                     value={exp.dateRange}
-                    onChange={(newValue) => {}}
+                    onChange={updateExperienceField(
+                      idx,
+                      'dateRange',
+                      VALUE_TYPE.value
+                    )}
                     renderInput={(startProps, endProps) => (
                       <React.Fragment>
                         <TextField {...startProps} />
@@ -392,13 +468,27 @@ const App: React.FC<{}> = () => {
                     multiline
                     rows={4}
                     maxRows={6}
+                    value={exp.description}
+                    onChange={updateExperienceField(idx, 'description')}
                   />
                 </Box>
 
                 <div className='btn__group'>
-                  {/* <div className='btn--action remove'>-</div> */}
-                  <div className='btn--action add'>+</div>
+                  <div
+                    onClick={handleRemoveExperience(idx)}
+                    className='btn--action remove'
+                  >
+                    -
+                  </div>
+                  <div
+                    onClick={handleAddExperience(idx + 1)}
+                    className='btn--action add'
+                  >
+                    +
+                  </div>
                 </div>
+
+                {idx !== experience.length - 1 && <hr className='divider' />}
               </Fragment>
             );
           })}
@@ -406,7 +496,7 @@ const App: React.FC<{}> = () => {
           {experience.length === 0 && (
             <div className='btn__group'>
               {/* <div className='btn--action remove'>-</div> */}
-              <div className='btn--action add' onClick={handleAddExperience}>
+              <div className='btn--action add' onClick={handleAddExperience(0)}>
                 +
               </div>
             </div>
