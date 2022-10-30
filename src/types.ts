@@ -23,7 +23,7 @@ export interface Education {
   degree: string;
   field: string;
   gpa: string;
-  dateRange: any[];
+  dateRange: RangeInput<any>;
 }
 
 export interface Experience {

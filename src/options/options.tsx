@@ -27,7 +27,7 @@ import {
   Experience,
   FormData,
 } from '../types';
-import { VALUE_TYPE } from './constants';
+import { DEFAULT_LINKS, VALUE_TYPE } from '../constants';
 import { getFormData, setFormData } from '../utils/storage';
 
 const App: React.FC<{}> = () => {
@@ -51,7 +51,7 @@ const App: React.FC<{}> = () => {
       degree: '',
       field: '',
       gpa: '',
-      dateRange: [],
+      dateRange: [null, null],
     });
 
   const [experience, setExperience] = useState<Experience[]>([]);
@@ -85,7 +85,6 @@ const App: React.FC<{}> = () => {
       skills,
     };
 
-    console.log('HELLO THERE');
     setFormData(formData);
   }, [
     resume,
@@ -354,14 +353,19 @@ const App: React.FC<{}> = () => {
               id='outlined-basic'
               label='LinkedIn URL'
               variant='outlined'
-              onChange={handleAddLink('linkedIn')}
-              value={links.find((link) => link.type === 'linkedIn')}
+              onChange={handleAddLink(DEFAULT_LINKS.linkedIn)}
+              value={
+                links.find((link) => link.type === DEFAULT_LINKS.linkedIn).url
+              }
             />
             <TextField
               id='outlined-basic'
               label='GitHub URL'
               variant='outlined'
-              onChange={handleAddLink('github')}
+              onChange={handleAddLink(DEFAULT_LINKS.github)}
+              value={
+                links.find((link) => link.type === DEFAULT_LINKS.github).url
+              }
             />
           </Box>
 
@@ -376,13 +380,19 @@ const App: React.FC<{}> = () => {
               id='outlined-basic'
               label='Porfolio URL'
               variant='outlined'
-              onChange={handleAddLink('portfolio')}
+              onChange={handleAddLink(DEFAULT_LINKS.portfolio)}
+              value={
+                links.find((link) => link.type === DEFAULT_LINKS.portfolio).url
+              }
             />
             <TextField
               id='outlined-basic'
               label='Other URL'
               variant='outlined'
-              onChange={handleAddLink('other')}
+              onChange={handleAddLink(DEFAULT_LINKS.other)}
+              value={
+                links.find((link) => link.type === DEFAULT_LINKS.other).url
+              }
             />
           </Box>
         </div>
@@ -404,6 +414,7 @@ const App: React.FC<{}> = () => {
               label='Institution Name'
               variant='outlined'
               onChange={onChangeHandler<Education>('name', setEducationField)}
+              value={education.name}
             />
           </Box>
 
@@ -441,10 +452,12 @@ const App: React.FC<{}> = () => {
               label='Field of Study'
               variant='outlined'
               onChange={onChangeHandler<Education>('field', setEducationField)}
+              value={education.field}
             />
           </Box>
         </div>
       </div>
+
       <div className='section'>
         <div className='section__sep'>
           <div className='section__title--mb'>Experience</div>

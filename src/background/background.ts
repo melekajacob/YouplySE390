@@ -1,3 +1,4 @@
+import { DEFAULT_LINKS } from './../constants';
 import { setFormData } from './../utils/storage';
 // TODO: background script
 chrome.runtime.onInstalled.addListener(() => {
@@ -15,13 +16,18 @@ chrome.runtime.onInstalled.addListener(() => {
       postalCode: '',
       province: '',
     },
-    links: [],
+    links: [
+      { type: DEFAULT_LINKS.linkedIn, url: '' },
+      { type: DEFAULT_LINKS.github, url: '' },
+      { type: DEFAULT_LINKS.portfolio, url: '' },
+      { type: DEFAULT_LINKS.other, url: '' },
+    ],
     education: {
       name: '',
       degree: '',
       field: '',
       gpa: '',
-      dateRange: [],
+      dateRange: [null, null],
     },
     experience: [],
     skills: [],
