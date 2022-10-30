@@ -1,7 +1,10 @@
+import { FormData } from './types';
+
 export enum VALUE_TYPE {
   domEvent,
   checkbox,
   value,
+  date,
 }
 
 export const DEFAULT_LINKS = {
@@ -9,4 +12,35 @@ export const DEFAULT_LINKS = {
   github: 'github',
   portfolio: 'portfolio',
   other: 'other',
+};
+
+export const DEFAULT_FORM_DATA: FormData = {
+  resume: null,
+  personalInfo: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  },
+  address: {
+    street: '',
+    postalCode: '',
+    province: '',
+  },
+  links: [
+    { type: DEFAULT_LINKS.linkedIn, url: '' },
+    { type: DEFAULT_LINKS.github, url: '' },
+    { type: DEFAULT_LINKS.portfolio, url: '' },
+    { type: DEFAULT_LINKS.other, url: '' },
+  ],
+  education: {
+    name: '',
+    degree: '',
+    field: '',
+    gpa: '',
+    startDate: null,
+    endDate: null,
+  },
+  experience: [],
+  skills: [],
 };

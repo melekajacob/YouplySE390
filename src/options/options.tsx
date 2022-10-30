@@ -6,11 +6,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import DateRangePicker from '@mui/lab/DateRangePicker';
-import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
-import DateAdapter from '@mui/lab/AdapterMoment';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
 import InputLabel from '@mui/material/InputLabel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReactNotification from 'react-notifications-component';
@@ -27,35 +26,25 @@ import {
   Experience,
   FormData,
 } from '../types';
-import { DEFAULT_LINKS, VALUE_TYPE } from '../constants';
+import { DEFAULT_FORM_DATA, DEFAULT_LINKS, VALUE_TYPE } from '../constants';
 import { getFormData, setFormData } from '../utils/storage';
+import { getFormattedDate } from '../utils/utils';
 
 const App: React.FC<{}> = () => {
-  const [resume, setResume] = useState<File | null>(null);
+  const [resume, setResume] = useState<File | null>(DEFAULT_FORM_DATA.resume);
   const [personalInfo, setPersonalInfo, setPersonalInfoField] =
-    useStateObject<PersonalInfo>({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-    });
-  const [address, setAddress, setAddressField] = useStateObject<Address>({
-    street: '',
-    postalCode: '',
-    province: '',
-  });
-  const [links, setLinks] = useState<Link[]>([]);
+    useStateObject<PersonalInfo>(DEFAULT_FORM_DATA.personalInfo);
+  const [address, setAddress, setAddressField] = useStateObject<Address>(
+    DEFAULT_FORM_DATA.address
+  );
+  const [links, setLinks] = useState<Link[]>(DEFAULT_FORM_DATA.links);
   const [education, setEducation, setEducationField] =
-    useStateObject<Education>({
-      name: '',
-      degree: '',
-      field: '',
-      gpa: '',
-      dateRange: [null, null],
-    });
+    useStateObject<Education>(DEFAULT_FORM_DATA.education);
 
-  const [experience, setExperience] = useState<Experience[]>([]);
-  const [skills, setSkills] = useState<string[]>([]);
+  const [experience, setExperience] = useState<Experience[]>(
+    DEFAULT_FORM_DATA.experience
+  );
+  const [skills, setSkills] = useState<string[]>(DEFAULT_FORM_DATA.skills);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -109,9 +98,15 @@ const App: React.FC<{}> = () => {
   };
 
   const onChangeHandler =
-    <T,>(field: keyof T, fieldUpdater: (key: keyof T, value: any) => void) =>
+    <T,>(
+      field: keyof T,
+      fieldUpdater: (key: keyof T, value: any) => void,
+      valueType: VALUE_TYPE = VALUE_TYPE.domEvent
+    ) =>
     (e: ChangeEvent<HTMLInputElement>) => {
-      fieldUpdater(field, e.target.value);
+      const value = valueType === VALUE_TYPE.domEvent ? e.target.value : e;
+
+      fieldUpdater(field, value);
     };
 
   const handleAddLink =
@@ -139,7 +134,8 @@ const App: React.FC<{}> = () => {
         company: '',
         location: '',
         isCurrentlyWorking: false,
-        dateRange: [null, null],
+        startDate: null,
+        endDate: null,
         description: '',
         id: uuidv4(),
       });
@@ -160,6 +156,8 @@ const App: React.FC<{}> = () => {
       return e.target.value;
     } else if (valueType === VALUE_TYPE.value) {
       return e;
+    } else if (valueType === VALUE_TYPE.date) {
+      return getFormattedDate(e);
     }
   };
 
@@ -455,6 +453,41 @@ const App: React.FC<{}> = () => {
               value={education.field}
             />
           </Box>
+
+          <Box
+            sx={{
+              '& .MuiTextField-root': {
+                m: 1,
+                width: '45%',
+              },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <DatePicker
+              label='Start Date'
+              views={['year', 'month', 'day']}
+              value={education.startDate}
+              onChange={onChangeHandler<Education>(
+                'startDate',
+                setEducationField,
+                VALUE_TYPE.value
+              )}
+              renderInput={(params) => <TextField {...params} />}
+            />
+
+            <DatePicker
+              label='End Date (or Expected)'
+              views={['year', 'month', 'day']}
+              value={education.endDate}
+              onChange={onChangeHandler<Education>(
+                'endDate',
+                setEducationField,
+                VALUE_TYPE.value
+              )}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Box>
         </div>
       </div>
 
@@ -521,33 +554,39 @@ const App: React.FC<{}> = () => {
                 </div>
                 <Box
                   sx={{
-                    '& .MuiTextField-root': { m: 1, width: '42%' },
+                    '& .MuiTextField-root': {
+                      m: 1,
+                      width: exp.isCurrentlyWorking ? '93%' : '45%',
+                    },
                     display: 'flex',
                     justifyContent: 'center',
                   }}
                 >
-                  <DateRangePicker
-                    startText='Start Date'
-                    endText='End Date'
-                    value={exp.dateRange}
+                  <DatePicker
+                    label='Start Date'
+                    views={['year', 'month', 'day']}
+                    value={exp.startDate}
                     onChange={updateExperienceField(
                       idx,
-                      'dateRange',
-                      VALUE_TYPE.value
+                      'startDate',
+                      VALUE_TYPE.date
                     )}
-                    renderInput={(startProps, endProps) => (
-                      <React.Fragment>
-                        <TextField {...startProps} />
-                        <Box
-                          sx={{ mx: 2, fontSize: '16px', fontWeight: 'bold' }}
-                        >
-                          {' '}
-                          to{' '}
-                        </Box>
-                        <TextField {...endProps} />
-                      </React.Fragment>
-                    )}
+                    renderInput={(params) => <TextField {...params} />}
                   />
+
+                  {!exp.isCurrentlyWorking && (
+                    <DatePicker
+                      label='End Date'
+                      views={['year', 'month', 'day']}
+                      value={exp.endDate}
+                      onChange={updateExperienceField(
+                        idx,
+                        'endDate',
+                        VALUE_TYPE.date
+                      )}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  )}
                 </Box>
 
                 <Box
@@ -644,7 +683,7 @@ const App: React.FC<{}> = () => {
 const root = document.createElement('div');
 document.body.appendChild(root);
 ReactDOM.render(
-  <LocalizationProvider dateAdapter={DateAdapter}>
+  <LocalizationProvider dateAdapter={AdapterDateFns}>
     <ReactNotification />
     <App />
   </LocalizationProvider>,

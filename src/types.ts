@@ -1,5 +1,3 @@
-import { RangeInput } from '@mui/lab/DateRangePicker/RangeTypes';
-
 export interface PersonalInfo {
   firstName: string;
   lastName: string;
@@ -23,7 +21,8 @@ export interface Education {
   degree: string;
   field: string;
   gpa: string;
-  dateRange: RangeInput<any>;
+  startDate: string;
+  endDate: string;
 }
 
 export interface Experience {
@@ -32,9 +31,8 @@ export interface Experience {
   location: string;
   isCurrentlyWorking: boolean;
   description: string;
-  // Since if they are currently working there, there is no start date
-  dateRange?: RangeInput<any>;
-  startDate?: string;
+  startDate: string;
+  endDate: string;
   id: string;
 }
 
