@@ -45,3 +45,7 @@ export interface FormData {
   experience: Experience[];
   skills: string[];
 }
+
+export interface JobFormMap {
+  [key: string]: boolean;
+}

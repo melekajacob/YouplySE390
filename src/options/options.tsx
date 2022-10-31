@@ -27,7 +27,7 @@ import {
   FormData,
 } from '../types';
 import { DEFAULT_FORM_DATA, DEFAULT_LINKS, VALUE_TYPE } from '../constants';
-import { getFormData, setFormData } from '../utils/storage';
+import { getIsJobFormMap, setFormData } from '../utils/storage';
 import { getFormattedDate } from '../utils/utils';
 
 const App: React.FC<{}> = () => {
@@ -49,7 +49,7 @@ const App: React.FC<{}> = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    getFormData().then((data: FormData) => {
+    getIsJobFormMap().then((data: FormData) => {
       setResume(data.resume);
       setPersonalInfo(data.personalInfo);
       setAddress(data.address);

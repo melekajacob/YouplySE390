@@ -5,3 +5,7 @@ export const getFormattedDate = (date: Date) => {
 
   return month + '/' + day + '/' + year;
 };
+
+export const getURL = () => {
+  return window.location.href;
+};
