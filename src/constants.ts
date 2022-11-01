@@ -47,7 +47,7 @@ export const DEFAULT_FORM_DATA: FormData = {
 
 // TODO: Bulk up this list
 export const JOB_SITES_SUBSTRINGS = [
-  'jobs.lever.co',
+  // 'jobs.lever.co',
   'boards.greenhouse.io',
   'myworkdayjobs',
 ];

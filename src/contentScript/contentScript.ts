@@ -2,6 +2,7 @@ import { getIsJobFormMap, addURLToJobFormMap } from './../utils/storage';
 // Classify
 import { isPageAJobForm } from './classification';
 
+console.log('RUNNING CONTENT SCRIPT');
 getIsJobFormMap().then((data) => {
   const URL = window.location.href;
   const seenPrefixOfURLBefore = Object.keys(data).some((prevURL) => {
