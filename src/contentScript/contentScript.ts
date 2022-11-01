@@ -13,6 +13,8 @@ getIsJobFormMap().then((data) => {
     // autofillForm();
   } else {
     const isJobForm = isPageAJobForm();
-    addURLToJobFormMap(URL, isJobForm);
+    console.log(isJobForm);
+
+    // addURLToJobFormMap(URL, isJobForm);
   }
 });

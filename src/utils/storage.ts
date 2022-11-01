@@ -39,6 +39,18 @@ export const getIsJobFormMap = (): Promise<JobFormMap> => {
   });
 };
 
+export const setIsJobFormMap = (jobFormMap: JobFormMap): Promise<void> => {
+  const data: LocalStorage = {
+    isJobFormMap: jobFormMap,
+  };
+
+  return new Promise((resolve) => {
+    chrome.storage.sync.set(data, () => {
+      resolve();
+    });
+  });
+};
+
 export const addURLToJobFormMap = async (
   url: string,
   isForm: boolean
