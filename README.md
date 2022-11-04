@@ -1,4 +1,9 @@
-# React Chrome Extension Boilerplate
+# Youply
+
+## Description
+When trying to find a job/internship, a candidate could apply to hundreds of positions. Many of these positions requiring them to fill out an online form, with their personal information, work experience, skills, etc. Most of these forms allow a user to upload their resume, and the form will attempt to parse the resume and fill out all the information. Unfortunately, these methods are quite error prone and have a high error rate due to the variability in resume formats. 
+
+Youply looks to solve this with a Chrome Extension which allows the user to upload their resume and fill out a single form, and then when they navigate to a job application form, the Youply will allow with to fill the form in seconds.
 
 ## Getting Started
 
@@ -13,15 +18,3 @@
 3. Click `Load unpacked`
 4. Select the entire `dist` folder
    function should be your extension name
-
-# Production Build
-
-1. `npm run build` to generate a minimized production build in the `dist` folder
-2. ZIP the entire `dist` folder (e.g. `dist.zip`)
-3. Publish the ZIP file on the Chrome Web Store Developer Dashboard!
-
-## Important Default Boilerplate Notes
-
-- Folders get flattened, static references to images from HTML do not need to be relative (i.e. `icon.png` instead of `../static/icon.png`)
-- Importing local ts/tsx/css files should be relative, since Webpack will build a dependancy graph using these paths
-- Update the manifest file as per usual for chrome related permissions, references to files in here should also be flattened and not be relative
