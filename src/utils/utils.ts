@@ -9,3 +9,23 @@ export const getFormattedDate = (date: Date) => {
 export const getURL = () => {
   return window.location.href;
 };
+
+export const getDOMElement = (
+  tagNames: string[],
+  attributes: string[],
+  values: string[]
+) => {
+  for (const tagName of tagNames) {
+    for (const attribute of attributes) {
+      for (const value of values) {
+        const el = document.querySelector(`${tagName}[${attribute}*=${value}]`);
+
+        if (el) {
+          return el;
+        }
+      }
+    }
+  }
+
+  return null;
+};

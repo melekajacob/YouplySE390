@@ -1,5 +1,5 @@
 import { JOB_SITES_SUBSTRINGS } from './../constants';
-import { getURL } from '../utils/utils';
+import { getURL, getDOMElement } from '../utils/utils';
 const RESUME_INPUT_NAME = [
   'resumeInput',
   'resume-input',
@@ -29,24 +29,4 @@ export const isPageAJobForm = () => {
   if (resumeInput) return true;
 
   return false;
-};
-
-export const getDOMElement = (
-  tagNames: string[],
-  attributes: string[],
-  values: string[]
-) => {
-  for (const tagName of tagNames) {
-    for (const attribute of attributes) {
-      for (const value of values) {
-        const el = document.querySelector(`${tagName}[${attribute}*=${value}]`);
-
-        if (el) {
-          return el;
-        }
-      }
-    }
-  }
-
-  return null;
 };
