@@ -1,6 +1,11 @@
 import { JOB_SITES_SUBSTRINGS } from './../constants';
 import { getURL } from '../utils/utils';
-const RESUME_INPUT_NAME = ['resumeInput', 'resume-input', 'resume'];
+const RESUME_INPUT_NAME = [
+  'resumeInput',
+  'resume-input',
+  'resume',
+  'fileUpload',
+];
 const RESUME_TYPES_OF_INPUT = ['input', 'div'];
 const RESUME_FIELD_TYPES = ['class', 'id', 'aria-labelledby'];
 
@@ -21,6 +26,8 @@ export const isPageAJobForm = () => {
     RESUME_INPUT_NAME
   );
 
+  if (resumeInput) return true;
+
   return false;
 };
 
@@ -29,14 +36,17 @@ export const getDOMElement = (
   attributes: string[],
   values: string[]
 ) => {
-  tagNames.forEach((tagName) => {
-    attributes.forEach((attribute) => {
-      values.forEach((value) => {
+  for (const tagName of tagNames) {
+    for (const attribute of attributes) {
+      for (const value of values) {
         const el = document.querySelector(`${tagName}[${attribute}*=${value}]`);
-        if (el) return el;
-      });
-    });
-  });
+
+        if (el) {
+          return el;
+        }
+      }
+    }
+  }
 
   return null;
 };
