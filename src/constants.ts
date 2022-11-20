@@ -51,3 +51,12 @@ export const JOB_SITES_SUBSTRINGS = [
   'boards.greenhouse.io',
   'myworkdayjobs',
 ];
+
+export const RESUME_INPUT_NAME = [
+  'resumeInput',
+  'resume-input',
+  'resume',
+  'fileUpload',
+];
+export const RESUME_TYPES_OF_INPUT = ['input', 'div'];
+export const RESUME_FIELD_TYPES = ['class', 'id', 'aria-labelledby'];

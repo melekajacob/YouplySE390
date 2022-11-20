@@ -1,13 +1,10 @@
-import { JOB_SITES_SUBSTRINGS } from './../constants';
+import {
+  JOB_SITES_SUBSTRINGS,
+  RESUME_FIELD_TYPES,
+  RESUME_TYPES_OF_INPUT,
+  RESUME_INPUT_NAME,
+} from './../constants';
 import { getURL, getDOMElement } from '../utils/utils';
-const RESUME_INPUT_NAME = [
-  'resumeInput',
-  'resume-input',
-  'resume',
-  'fileUpload',
-];
-const RESUME_TYPES_OF_INPUT = ['input', 'div'];
-const RESUME_FIELD_TYPES = ['class', 'id', 'aria-labelledby'];
 
 export const isPageAJobForm = () => {
   // Try URLs

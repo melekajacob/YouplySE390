@@ -1,6 +1,10 @@
+import {
+  RESUME_FIELD_TYPES,
+  RESUME_TYPES_OF_INPUT,
+  RESUME_INPUT_NAME,
+} from './../constants';
 import { getDOMElement } from './../utils/utils';
 import { getIsJobFormMap, addURLToJobFormMap } from './../utils/storage';
-// Classify
 import { isPageAJobForm } from './classification';
 
 getIsJobFormMap().then((data) => {
@@ -25,6 +29,15 @@ const FIRST_NAME_LABEL_NAME = ['firstName', 'first_name', 'FirstName', 'first'];
 const FIRST_NAME_TYPES = ['label'];
 
 const autofillForm = () => {
+  // Look for resume uploading
+  const resumeInput = getDOMElement(
+    RESUME_TYPES_OF_INPUT,
+    RESUME_FIELD_TYPES,
+    RESUME_INPUT_NAME
+  );
+
+  console.log(resumeInput);
+
   // Fill out first name and last name (consider full name input)
   // Try first to find the input from the 'for' attribute of the label
   // getDOMElement(['label'], )
