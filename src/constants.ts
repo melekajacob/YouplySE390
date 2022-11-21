@@ -58,5 +58,6 @@ export const RESUME_INPUT_NAME = [
   'resume',
   'fileUpload',
 ];
-export const RESUME_TYPES_OF_INPUT = ['input', 'div'];
+
+export const RESUME_TYPES_OF_INPUT = ['input', 'div', 'a'];
 export const RESUME_FIELD_TYPES = ['class', 'id', 'aria-labelledby'];

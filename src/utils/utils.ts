@@ -10,22 +10,32 @@ export const getURL = () => {
   return window.location.href;
 };
 
-export const getDOMElement = (
+const doesNodeExist = (nodes: HTMLElement[], newNode: HTMLElement) => {
+  return nodes.some((node) => node.isSameNode(newNode));
+};
+
+export const getDOMElements = (
   tagNames: string[],
   attributes: string[],
   values: string[]
-) => {
+): HTMLElement[] => {
+  const DOMElementMatches = [];
+
   for (const tagName of tagNames) {
     for (const attribute of attributes) {
       for (const value of values) {
-        const el = document.querySelector(`${tagName}[${attribute}*=${value}]`);
+        console.log(tagName, attribute, value);
 
-        if (el) {
-          return el;
+        const el = document.querySelector(
+          `${tagName}[${attribute}*=${value}]`
+        ) as HTMLElement;
+
+        if (el && !doesNodeExist(DOMElementMatches, el)) {
+          DOMElementMatches.push(el);
         }
       }
     }
   }
 
-  return null;
+  return DOMElementMatches;
 };

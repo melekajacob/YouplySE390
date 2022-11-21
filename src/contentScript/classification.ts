@@ -4,7 +4,7 @@ import {
   RESUME_TYPES_OF_INPUT,
   RESUME_INPUT_NAME,
 } from './../constants';
-import { getURL, getDOMElement } from '../utils/utils';
+import { getURL, getDOMElements } from '../utils/utils';
 
 export const isPageAJobForm = () => {
   // Try URLs
@@ -17,13 +17,11 @@ export const isPageAJobForm = () => {
   if (includesSubstring) return true;
 
   // Look for resume uploading
-  const resumeInput = getDOMElement(
+  const resumeInput = getDOMElements(
     RESUME_TYPES_OF_INPUT,
     RESUME_FIELD_TYPES,
     RESUME_INPUT_NAME
   );
 
-  if (resumeInput) return true;
-
-  return false;
+  return resumeInput.length > 0;
 };

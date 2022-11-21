@@ -3,13 +3,19 @@ import {
   RESUME_TYPES_OF_INPUT,
   RESUME_INPUT_NAME,
 } from './../constants';
-import { getDOMElement } from './../utils/utils';
-import { getIsJobFormMap, addURLToJobFormMap } from './../utils/storage';
+import { getDOMElements } from './../utils/utils';
+import {
+  getIsJobFormMap,
+  addURLToJobFormMap,
+  getFormData,
+} from './../utils/storage';
 import { isPageAJobForm } from './classification';
 
-getIsJobFormMap().then((data) => {
+(async () => {
+  const isJobFormMap = await getIsJobFormMap();
+
   const URL = window.location.href;
-  const seenPrefixOfURLBefore = Object.keys(data).some((prevURL) => {
+  const seenPrefixOfURLBefore = Object.keys(isJobFormMap).some((prevURL) => {
     return URL.indexOf(prevURL) === 0;
   });
 
@@ -23,23 +29,25 @@ getIsJobFormMap().then((data) => {
     addURLToJobFormMap(URL, isJobForm);
     autofillForm();
   }
-});
+})();
 
 const FIRST_NAME_LABEL_NAME = ['firstName', 'first_name', 'FirstName', 'first'];
-const FIRST_NAME_TYPES = ['label'];
+const FIRST_NAME_TYPES = ['input', 'div'];
+const FIRST_NAME_FIELD_TYPES = ['id', 'class'];
 
-const autofillForm = () => {
+const autofillForm = async () => {
   // Look for resume uploading
-  const resumeInput = getDOMElement(
-    RESUME_TYPES_OF_INPUT,
-    RESUME_FIELD_TYPES,
-    RESUME_INPUT_NAME
-  );
+  const formData = await getFormData();
+  console.log(formData);
 
-  console.log(resumeInput);
+  // TODO: Check if resume has been uploaded
+  // TODO: Handle full name instead of first and last
 
-  // Fill out first name and last name (consider full name input)
-  // Try first to find the input from the 'for' attribute of the label
-  // getDOMElement(['label'], )
-  // If that doesn't work, try to find the input directly
+  const firstNameInput = getDOMElements(
+    FIRST_NAME_TYPES,
+    FIRST_NAME_FIELD_TYPES,
+    FIRST_NAME_LABEL_NAME
+  )[0];
+  console.log(firstNameInput);
+  (firstNameInput as HTMLInputElement).value = formData.personalInfo.firstName;
 };
