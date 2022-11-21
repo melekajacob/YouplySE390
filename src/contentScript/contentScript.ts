@@ -31,9 +31,45 @@ import { isPageAJobForm } from './classification';
   }
 })();
 
-const FIRST_NAME_LABEL_NAME = ['firstName', 'first_name', 'FirstName', 'first'];
-const FIRST_NAME_TYPES = ['input', 'div'];
-const FIRST_NAME_FIELD_TYPES = ['id', 'class'];
+const INPUT_TYPES = {
+  firstName: {
+    names: ['firstName', 'first_name', 'FirstName', 'first'],
+    tags: ['input', 'div'],
+    attributes: ['id', 'class'],
+  },
+  lastName: {
+    names: ['lastName', 'last_name', 'LastName', 'last'],
+    tags: ['input', 'div'],
+    attributes: ['id', 'class'],
+  },
+  email: {
+    names: ['email', 'Email', 'e-mail'],
+    tags: ['input', 'div'],
+    attributes: ['id', 'class'],
+  },
+  phone: {
+    names: ['phone', 'Phone', 'PhoneNumber', 'phone_number'],
+    tags: ['input', 'div'],
+    attributes: ['id', 'class'],
+  },
+  location: {
+    names: ['location', 'Location'],
+    tags: ['input', 'div', 'select'],
+    attributes: ['id', 'class'],
+  },
+};
+
+const fillInput = (inputInfo, data) => {
+  const input = getDOMElements(
+    inputInfo.tags,
+    inputInfo.attributes,
+    inputInfo.names
+  )[0] as HTMLInputElement;
+
+  console.log(input);
+
+  input.value = data;
+};
 
 const autofillForm = async () => {
   // Look for resume uploading
@@ -43,11 +79,13 @@ const autofillForm = async () => {
   // TODO: Check if resume has been uploaded
   // TODO: Handle full name instead of first and last
 
-  const firstNameInput = getDOMElements(
-    FIRST_NAME_TYPES,
-    FIRST_NAME_FIELD_TYPES,
-    FIRST_NAME_LABEL_NAME
-  )[0];
-  console.log(firstNameInput);
-  (firstNameInput as HTMLInputElement).value = formData.personalInfo.firstName;
+  fillInput(INPUT_TYPES.firstName, formData.personalInfo.firstName);
+  fillInput(INPUT_TYPES.lastName, formData.personalInfo.lastName);
+  fillInput(INPUT_TYPES.email, formData.personalInfo.email);
+  fillInput(INPUT_TYPES.phone, formData.personalInfo.phone);
+
+  fillInput(
+    INPUT_TYPES.location,
+    `${formData.address.city}, ${formData.address.province}`
+  );
 };

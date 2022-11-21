@@ -320,17 +320,42 @@ const App: React.FC<{}> = () => {
           >
             <TextField
               id='outlined-basic'
+              label='City'
+              variant='outlined'
+              onChange={onChangeHandler<Address>('city', setAddressField)}
+              value={address.city}
+            />
+
+            <TextField
+              id='outlined-basic'
               label='Postal Code'
               variant='outlined'
               onChange={onChangeHandler<Address>('postalCode', setAddressField)}
               value={address.postalCode}
             />
+          </Box>
+
+          <Box
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '45%' },
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <TextField
               id='outlined-basic'
               label='Province'
               variant='outlined'
               onChange={onChangeHandler<Address>('province', setAddressField)}
               value={address.province}
+            />
+
+            <TextField
+              id='outlined-basic'
+              label='Country'
+              variant='outlined'
+              onChange={onChangeHandler<Address>('country', setAddressField)}
+              value={address.country}
             />
           </Box>
         </div>

@@ -26,6 +26,8 @@ export const DEFAULT_FORM_DATA: FormData = {
     street: '',
     postalCode: '',
     province: '',
+    city: '',
+    country: '',
   },
   links: [
     { type: DEFAULT_LINKS.linkedIn, url: '' },

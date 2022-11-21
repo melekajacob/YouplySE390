@@ -9,6 +9,8 @@ export interface Address {
   street: string;
   postalCode: string;
   province: string;
+  city: string;
+  country: string;
 }
 
 export interface Link {

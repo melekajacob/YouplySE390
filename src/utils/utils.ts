@@ -24,8 +24,6 @@ export const getDOMElements = (
   for (const tagName of tagNames) {
     for (const attribute of attributes) {
       for (const value of values) {
-        console.log(tagName, attribute, value);
-
         const el = document.querySelector(
           `${tagName}[${attribute}*=${value}]`
         ) as HTMLElement;
