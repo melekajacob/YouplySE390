@@ -31,6 +31,7 @@ import { isPageAJobForm } from './classification';
   }
 })();
 
+// TODO: Move to some sort of similarity check
 const INPUT_TYPES = {
   firstName: {
     names: ['firstName', 'first_name', 'FirstName', 'first'],
@@ -57,18 +58,68 @@ const INPUT_TYPES = {
     tags: ['input', 'div', 'select'],
     attributes: ['id', 'class'],
   },
+  schoolName: {
+    names: [
+      'school-name',
+      'education',
+      'school',
+      'schoolName',
+      'Education',
+      'EducationName',
+      'university',
+      'select2-choice',
+      's2id_autogen9_search',
+    ],
+    tags: ['input', 'div', 'a'],
+    attributes: ['id', 'class', 'describedby'],
+  },
 };
 
-const fillInput = (inputInfo, data) => {
-  const input = getDOMElements(
+const fillTextInput = (inputInfo, data, shouldClear = true) => {
+  // We won't clear any inputs just b/c we don't have data inputted prev
+  if (!data || data === '') return;
+
+  const inputs = getDOMElements(
     inputInfo.tags,
     inputInfo.attributes,
     inputInfo.names
-  )[0] as HTMLInputElement;
+  );
 
-  console.log(input);
+  console.log(inputs);
 
-  input.value = data;
+  inputs
+    .filter((input) => input.tagName === 'INPUT')
+    .forEach((input: HTMLInputElement) => {
+      input.value = shouldClear ? data : input.value + data;
+    });
+};
+
+const timer = async (delay) => new Promise((res) => setTimeout(res, delay));
+
+const clickAllChildren = async (el: HTMLElement) => {
+  console.log('MOUSEDOWN', el);
+
+  const event = new MouseEvent('mousedown');
+  el.dispatchEvent(event);
+
+  await timer(1000);
+
+  for (const child of el.children) {
+    await clickAllChildren(child as HTMLElement);
+  }
+};
+
+const clickEnter = (el: HTMLElement) => {
+  el.dispatchEvent(
+    new KeyboardEvent('keydown', {
+      code: 'Enter',
+      key: 'Enter',
+      charCode: 13,
+      keyCode: 13,
+      view: window,
+      bubbles: true,
+    })
+  );
 };
 
 const autofillForm = async () => {
@@ -79,13 +130,45 @@ const autofillForm = async () => {
   // TODO: Check if resume has been uploaded
   // TODO: Handle full name instead of first and last
 
-  fillInput(INPUT_TYPES.firstName, formData.personalInfo.firstName);
-  fillInput(INPUT_TYPES.lastName, formData.personalInfo.lastName);
-  fillInput(INPUT_TYPES.email, formData.personalInfo.email);
-  fillInput(INPUT_TYPES.phone, formData.personalInfo.phone);
+  fillTextInput(INPUT_TYPES.firstName, formData.personalInfo.firstName);
+  fillTextInput(INPUT_TYPES.lastName, formData.personalInfo.lastName);
+  fillTextInput(INPUT_TYPES.email, formData.personalInfo.email);
+  fillTextInput(INPUT_TYPES.phone, formData.personalInfo.phone);
 
-  fillInput(
+  // TODO: Look into selecting from dropdown
+  // TODO: If failed try, putting in location individually
+  fillTextInput(
     INPUT_TYPES.location,
-    `${formData.address.city}, ${formData.address.province}`
+    formData.address.city && formData.address.province
+      ? `${formData.address.city}, ${formData.address.province}`
+      : ''
   );
+
+  // fillInput(INPUT_TYPES.schoolName, formData.education.name);
+
+  const dropdowns = getDOMElements(
+    INPUT_TYPES.schoolName.tags,
+    INPUT_TYPES.schoolName.attributes,
+    INPUT_TYPES.schoolName.names
+  );
+
+  console.log(dropdowns);
+
+  dropdowns.forEach((el) => {
+    const event = new MouseEvent('mousedown');
+    el.dispatchEvent(event);
+  });
+
+  setTimeout(async () => {
+    console.log('FILLING');
+
+    const name = 'Waterloo';
+
+    for (const letter of name) {
+      fillTextInput(INPUT_TYPES.schoolName, letter, false);
+      await timer(500);
+    }
+
+    clickEnter(document.querySelector('#s2id_autogen9_search'));
+  }, 1000);
 };

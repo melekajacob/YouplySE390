@@ -30,6 +30,8 @@ import { DEFAULT_FORM_DATA, DEFAULT_LINKS, VALUE_TYPE } from '../constants';
 import { getFormData, setFormData } from '../utils/storage';
 import { getFormattedDate } from '../utils/utils';
 
+// TODO: Break this component up
+// TODO: Add personal identification questions
 const App: React.FC<{}> = () => {
   const [resume, setResume] = useState<File | null>(DEFAULT_FORM_DATA.resume);
   const [personalInfo, setPersonalInfo, setPersonalInfoField] =
