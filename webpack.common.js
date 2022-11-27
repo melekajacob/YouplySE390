@@ -10,6 +10,7 @@ module.exports = {
     background: path.resolve('src/background/background.ts'),
     contentScript: path.resolve('src/contentScript/contentScript.ts'),
   },
+  
   module: {
     rules: [
       {
@@ -28,7 +29,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js']
   },
   plugins: [
     new CleanWebpackPlugin({

@@ -1,4 +1,5 @@
 import { FormData, JobFormMap } from '../types';
+import { base64ToFile, fileToBase64 } from './utils';
 
 export interface LocalStorage {
   formData?: FormData;
@@ -7,23 +8,32 @@ export interface LocalStorage {
 
 export type LocalStorageKeys = keyof LocalStorage;
 
+/* TODO: Notice that we are using local instead of sync storage
+  because there is too stringent max byte limits to store uploaded 
+  resumes. Need to refactor this to allow either smaller chunks so everything
+  can be synced locally, or just have the resume in local storage and the
+  rest in sync
+*/
+
 export const getFormData = (): Promise<FormData> => {
   const keys: LocalStorageKeys[] = ['formData'];
 
   return new Promise((resolve) => {
-    chrome.storage.sync.get(keys, (res: LocalStorage) => {
+    chrome.storage.local.get(keys, (res: any) => {
+      res.formData = {...res.formData, resume: base64ToFile(res.formData.resume, "test.pdf")}
       resolve(res.formData);
     });
   });
 };
 
-export const setFormData = (formData: FormData): Promise<void> => {
-  const data: LocalStorage = {
-    formData,
+export const setFormData = async (formData: FormData): Promise<void> => {
+  const data = {
+    formData: {...formData, resume: await fileToBase64(formData.resume)}
   };
-
+  
   return new Promise((resolve) => {
-    chrome.storage.sync.set(data, () => {
+    
+    chrome.storage.local.set(data, () => {
       resolve();
     });
   });
@@ -33,7 +43,7 @@ export const getIsJobFormMap = (): Promise<JobFormMap> => {
   const keys: LocalStorageKeys[] = ['isJobFormMap'];
 
   return new Promise((resolve) => {
-    chrome.storage.sync.get(keys, (res: LocalStorage) => {
+    chrome.storage.local.get(keys, (res: LocalStorage) => {
       resolve(res.isJobFormMap);
     });
   });
@@ -45,7 +55,7 @@ export const setIsJobFormMap = (jobFormMap: JobFormMap): Promise<void> => {
   };
 
   return new Promise((resolve) => {
-    chrome.storage.sync.set(data, () => {
+    chrome.storage.local.set(data, () => {
       resolve();
     });
   });
@@ -65,7 +75,7 @@ export const addURLToJobFormMap = async (
   };
 
   return new Promise((resolve) => {
-    chrome.storage.sync.set(data, () => {
+    chrome.storage.local.set(data, () => {
       resolve();
     });
   });

@@ -75,7 +75,7 @@ const App: React.FC<{}> = () => {
       experience,
       skills,
     };
-
+  
     setFormData(formData);
   }, [
     resume,
