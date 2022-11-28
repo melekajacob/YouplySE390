@@ -1,0 +1,25 @@
+.overlayCard {
+    position: fixed;
+    left: 5%;
+    top: 15%;
+    max-width: 240px;
+    max-height: 240px;
+    background-color: #f5f5f5 !important;
+    z-index: 99999;
+}
+  
+.btn--outline {
+    border: 2px solid #68ab96;
+    background-color: white;
+    color: #68ab96;
+    padding: 10px 50px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn--outline:hover {
+    background-color: #68ab96;
+    color: white;
+}

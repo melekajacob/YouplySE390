@@ -2,35 +2,14 @@ import {
   RESUME_FIELD_TYPES,
   RESUME_TYPES_OF_INPUT,
   RESUME_INPUT_NAME,
-} from "./../constants";
-import { getDOMElements, sleep, sleepUntil } from "./../utils/utils";
+} from "../constants";
+import { getDOMElements, sleep, sleepUntil } from "../utils/utils";
 import {
   getIsJobFormMap,
   addURLToJobFormMap,
   getFormData,
-} from "./../utils/storage";
+} from "../utils/storage";
 import { isPageAJobForm } from "./classification";
-import { SingleEntryPlugin } from "webpack";
-import SelectInput from "@mui/material/Select/SelectInput";
-
-(async () => {
-  const isJobFormMap = await getIsJobFormMap();
-
-  const URL = window.location.href;
-  const seenPrefixOfURLBefore = Object.keys(isJobFormMap).some((prevURL) => {
-    return URL.indexOf(prevURL) === 0;
-  });
-
-  if (seenPrefixOfURLBefore) {
-    // TODO: should do nothing here, but for now we will start filling form out
-    autofillGreenhouse();
-  } else {
-    const isJobForm = isPageAJobForm();
-
-    addURLToJobFormMap(URL, isJobForm);
-    autofillGreenhouse();
-  }
-})();
 
 // TODO: Move to some sort of similarity check
 const INPUT_TYPES = {
@@ -101,49 +80,6 @@ const fillTextInput = (inputInfo, data, shouldClear = true) => {
     });
 };
 
-const timer = async (delay) => new Promise((res) => setTimeout(res, delay));
-
-const clickAllChildren = async (el: HTMLElement) => {
-  console.log("MOUSEDOWN", el);
-
-  const event = new MouseEvent("mousedown");
-  el.dispatchEvent(event);
-
-  await timer(1000);
-
-  for (const child of el.children) {
-    await clickAllChildren(child as HTMLElement);
-  }
-};
-
-const clickEnter = (el: HTMLElement) => {
-  el.dispatchEvent(
-    new KeyboardEvent("keydown", {
-      code: "Enter",
-      key: "Enter",
-      charCode: 13,
-      keyCode: 13,
-      view: window,
-      bubbles: true,
-    })
-  );
-};
-
-const selectFirstFromDropdown = (dropdownSelector: string) => {
-  const dropdownElement = document.querySelector(
-    dropdownSelector
-  ) as HTMLUListElement;
-
-  sleepUntil(() => {
-    if (dropdownElement.children.length == 0) {
-      return false;
-    } else {
-      (dropdownElement.children[0] as HTMLLIElement).click();
-      return true;
-    }
-  }, 10000);
-};
-
 const fileUpload = (resume: File, inputElement: HTMLInputElement) => {
   const datatransfer = new DataTransfer();
   datatransfer.items.add(resume);
@@ -152,8 +88,8 @@ const fileUpload = (resume: File, inputElement: HTMLInputElement) => {
 };
 
 const resumeUpload = (resume: File) => {
-  // const elements = getDOMElements(INPUT_TYPES.resume.tags, INPUT_TYPES.resume.attributes, INPUT_TYPES.resume.names);
-  // console.log("Resume elements", elements)
+  if (!resume) return;
+
   let fieldName = "resume";
   if (
     !document
@@ -199,28 +135,36 @@ const autofillGreenhouse = async () => {
       ? `${formData.address.city}, ${formData.address.province}`
       : ""
   );
-
-  // TODO:
-  // if(formData.address.city && formData.address.province) {
-  //   (document.querySelector("auto-complete#job_application_location") as HTMLDivElement).setAttribute("open", "true");
-  //   selectFirstFromDropdown("ul#location_autocomplete-items-popup")
-  // }
-
-  // while(true) {
-  //   const popupElement = document.querySelector("ul#location_autocomplete-items-popup") as HTMLUListElement
-  //   if(popupElement.children.length == 0) {
-  //     console.log("not changed");
-  //     sleep(100);
-  //   } else {
-  //     (popupElement.children[0] as HTMLLIElement).click();
-  //     break;
-  //   }
-  // }
-
-  // Now select the first element from the dropdown
-
-  // // TODO: Look into selecting from dropdown
-  // // TODO: If failed try, putting in location individually
-
-  // // fillInput(INPUT_TYPES.schoolName, formData.education.name);
 };
+
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import Modal from "../components/Modal";
+
+import "./contentScript.css";
+
+const AutofillPopup: React.FC<{}> = () => {
+  const [isActive, setIsActive] = useState<boolean>(false);
+
+  const handleAutofill = async () => {
+    await autofillGreenhouse();
+
+    setIsActive(false);
+  };
+
+  useEffect(() => {
+    setIsActive(isPageAJobForm());
+  }, []);
+
+  return (
+    <>
+      {isActive && (
+        <Modal setIsActive={setIsActive} handleAutofill={handleAutofill} />
+      )}
+    </>
+  );
+};
+
+const root = document.createElement("div");
+document.body.appendChild(root);
+ReactDOM.render(<AutofillPopup />, root);

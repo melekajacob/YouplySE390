@@ -1,5 +1,5 @@
-import { FormData, JobFormMap } from '../types';
-import { base64ToFile, fileToBase64 } from './utils';
+import { FormData, JobFormMap } from "../types";
+import { base64ToFile, fileToBase64 } from "./utils";
 
 export interface LocalStorage {
   formData?: FormData;
@@ -16,11 +16,14 @@ export type LocalStorageKeys = keyof LocalStorage;
 */
 
 export const getFormData = (): Promise<FormData> => {
-  const keys: LocalStorageKeys[] = ['formData'];
+  const keys: LocalStorageKeys[] = ["formData"];
 
   return new Promise((resolve) => {
     chrome.storage.local.get(keys, (res: any) => {
-      res.formData = {...res.formData, resume: base64ToFile(res.formData.resume, "test.pdf")}
+      res.formData = {
+        ...res.formData,
+        resume: base64ToFile(res.formData.resume, "resume.pdf"),
+      };
       resolve(res.formData);
     });
   });
@@ -28,11 +31,10 @@ export const getFormData = (): Promise<FormData> => {
 
 export const setFormData = async (formData: FormData): Promise<void> => {
   const data = {
-    formData: {...formData, resume: await fileToBase64(formData.resume)}
+    formData: { ...formData, resume: await fileToBase64(formData.resume) },
   };
-  
+
   return new Promise((resolve) => {
-    
     chrome.storage.local.set(data, () => {
       resolve();
     });
@@ -40,7 +42,7 @@ export const setFormData = async (formData: FormData): Promise<void> => {
 };
 
 export const getIsJobFormMap = (): Promise<JobFormMap> => {
-  const keys: LocalStorageKeys[] = ['isJobFormMap'];
+  const keys: LocalStorageKeys[] = ["isJobFormMap"];
 
   return new Promise((resolve) => {
     chrome.storage.local.get(keys, (res: LocalStorage) => {

@@ -1,4 +1,4 @@
-import { FormData } from './types';
+import { FormData } from "./types";
 
 export enum VALUE_TYPE {
   domEvent,
@@ -8,38 +8,38 @@ export enum VALUE_TYPE {
 }
 
 export const DEFAULT_LINKS = {
-  linkedIn: 'linkedIn',
-  github: 'github',
-  portfolio: 'portfolio',
-  other: 'other',
+  linkedIn: "linkedIn",
+  github: "github",
+  portfolio: "portfolio",
+  other: "other",
 };
 
 export const DEFAULT_FORM_DATA: FormData = {
   resume: null,
   personalInfo: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
   },
   address: {
-    street: '',
-    postalCode: '',
-    province: '',
-    city: '',
-    country: '',
+    street: "",
+    postalCode: "",
+    province: "",
+    city: "",
+    country: "",
   },
   links: [
-    { type: DEFAULT_LINKS.linkedIn, url: '' },
-    { type: DEFAULT_LINKS.github, url: '' },
-    { type: DEFAULT_LINKS.portfolio, url: '' },
-    { type: DEFAULT_LINKS.other, url: '' },
+    { type: DEFAULT_LINKS.linkedIn, url: "" },
+    { type: DEFAULT_LINKS.github, url: "" },
+    { type: DEFAULT_LINKS.portfolio, url: "" },
+    { type: DEFAULT_LINKS.other, url: "" },
   ],
   education: {
-    name: '',
-    degree: '',
-    field: '',
-    gpa: '',
+    name: "",
+    degree: "",
+    field: "",
+    gpa: "",
     startDate: null,
     endDate: null,
   },
@@ -48,18 +48,14 @@ export const DEFAULT_FORM_DATA: FormData = {
 };
 
 // TODO: Bulk up this list
-export const JOB_SITES_SUBSTRINGS = [
-  'jobs.lever.co',
-  'boards.greenhouse.io',
-  'myworkdayjobs',
-];
+export const JOB_SITES_SUBSTRINGS = ["boards.greenhouse.io"];
 
 export const RESUME_INPUT_NAME = [
-  'resumeInput',
-  'resume-input',
-  'resume',
-  'fileUpload',
+  "resumeInput",
+  "resume-input",
+  "resume",
+  "fileUpload",
 ];
 
-export const RESUME_TYPES_OF_INPUT = ['input', 'div', 'a'];
-export const RESUME_FIELD_TYPES = ['class', 'id', 'aria-labelledby'];
+export const RESUME_TYPES_OF_INPUT = ["input", "div", "a"];
+export const RESUME_FIELD_TYPES = ["class", "id", "aria-labelledby"];
